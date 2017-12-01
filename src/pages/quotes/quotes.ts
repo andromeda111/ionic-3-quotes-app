@@ -1,12 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the QuotesPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { Quote } from '../../data/quote.interface';
+import { AlertController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -14,12 +9,38 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'quotes.html',
 })
 export class QuotesPage {
+  quoteGroup: {category: string, quotes: Quote[], icon: string};
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private alertCtrl: AlertController) {}
+
+  ionViewWillLoad() {
+    this.quoteGroup = this.navParams.data;
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad QuotesPage');
-  }
+  onAddToFavorite(selectedQuote: Quote) {
+    const alert = this.alertCtrl.create({
+      title: 'Add Quote',
+      subTitle: 'Are you sure?',
+      message: 'Add quote to favorites?',
+      buttons: [
+        {
+          text:'Add',
+          handler: () => {
+            console.log('Ok');
+          }
+        },
+        {
+          text:'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancelled!');
+          }
+        }
+      ]
+    });
 
+    alert.present();
+  }
 }
